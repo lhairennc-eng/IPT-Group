@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fieldnote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #07040d;
+  --purple: #7c3aed;
+  --purple-deep: #6025c9;
+  --violet: #a855f7;
+  --paper: #f6f2ff;
+  --ink: #14101f;
+  --field: #e9e1fb;
+  --muted: #5f5878;
+  --line: #b9aad9;
+  --focus: #7c3aed;
+  --error: #c4261d;
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Instrument Sans", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #130c22;
+    --ink: #f3eefc;
+    --field: #1f1635;
+    --muted: #a99fc7;
+    --line: #44376b;
+    --focus: #c084fc;
+    --error: #ff8a80;
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
+[hidden] { display: none !important; }
+
+.page {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Left panel */
+.brand {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 48px;
+  padding: clamp(28px, 5vw, 64px);
+  background: var(--black);
+  color: #fff;
+}
+.brand::after {
+  content: "";
+  position: absolute;
+  top: -14%;
+  right: -16%;
+  width: 62%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--violet);
+}
+.logo {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.logo-mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 5px solid var(--violet);
+}
+.quote { position: relative; z-index: 1; margin: 0; }
+.quote p {
+  margin: 0;
+  max-width: 14ch;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5.6vw, 5rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+/* Right panel */
+.form-panel {
+  display: grid;
+  place-items: center;
+  padding: clamp(28px, 5vw, 64px);
+}
+.form-wrap { width: 100%; max-width: 380px; }
+h1 {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.hint { margin: 0 0 32px; color: var(--muted); overflow-wrap: anywhere; }
+.hint strong { color: var(--ink); }
+
+.notice {
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  background: var(--field);
+  border-left: 4px solid var(--error);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.95rem;
+}
+
+.field { margin-bottom: 20px; }
+label { display: block; margin-bottom: 6px; font-size: 0.95rem; font-weight: 600; }
+input[type="email"], input[type="password"] {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--field);
+  border: 0;
+  border-bottom: 2px solid var(--line);
+  border-radius: 8px 8px 0 0;
+}
+input::placeholder { color: var(--muted); opacity: 0.8; }
+input:focus-visible, button:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 28px;
+  font-weight: 400;
+  cursor: pointer;
+}
+.remember input { width: 18px; height: 18px; margin: 0; accent-color: var(--purple); }
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+.primary {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--purple);
+  border: 0;
+  border-radius: 8px;
+}
+.primary:hover { background: var(--purple-deep); }
+.primary:disabled { opacity: 0.6; cursor: wait; }
+
+.footer { margin: 28px 0 0; color: var(--muted); }
+.link {
+  padding: 0;
+  font-weight: 600;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 4px;
+}
+.link:hover { text-decoration-color: currentColor; }
+
+@media (max-width: 800px) {
+  .page { grid-template-columns: 1fr; min-height: 0; }
+  .brand { gap: 40px; padding: 24px 24px 36px; }
+  .brand::after { top: -22%; right: -26%; width: 70%; }
+  .quote p { font-size: clamp(2.2rem, 10vw, 3rem); }
+  .form-panel { padding: 36px 24px 48px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <section class="brand">
+    <div class="logo"><span class="logo-mark" aria-hidden="true"></span>Fieldnote</div>
+    <figure class="quote"><p>“I log in and I’m already mid-sentence.”</p></figure>
+  </section>
+
+  <main class="form-panel">
+    <div class="form-wrap">
+
+      <!-- Log in / sign up -->
+      <div id="auth">
+        <h1 id="title">Log in</h1>
+        <p class="hint" id="hint">Use the email you signed up with.</p>
+
+        <p class="notice" id="error" role="alert" hidden></p>
+
+        <form id="form">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Your password" autocomplete="current-password" required>
+          </div>
+          <label class="remember"><input type="checkbox" id="remember"> Keep me logged in</label>
+          <button type="submit" class="primary" id="submit">Log in</button>
+        </form>
+
+        <p class="footer">
+          <span id="switchText">New to Fieldnote?</span>
+          <button type="button" class="link" id="switch">Create an account</button>
+        </p>
+      </div>
+
+      <!-- After logging in -->
+      <div id="welcome" hidden>
+        <h1>You’re logged in</h1>
+        <p class="hint">Signed in as <strong id="who"></strong>.</p>
+        <button type="button" class="primary" id="logout">Log out</button>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+var USERS = 'fieldnote-users';
+var SESSION = 'fieldnote-session';
+var mode = 'login';
+
+function $(id) { return document.getElementById(id); }
+
+function getUsers() {
+  try { return JSON.parse(localStorage.getItem(USERS)) || {}; } catch (e) { return {}; }
+}
+function saveUsers(u) {
+  try { localStorage.setItem(USERS, JSON.stringify(u)); return true; } catch (e) { return false; }
+}
+
+// Passwords are scrambled (hashed) before they are saved
+async function scramble(email, password) {
+  var text = email + ':' + password;
+  if (window.crypto && crypto.subtle) {
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(function (b) {
+      return b.toString(16).padStart(2, '0');
+    }).join('');
+  }
+  return btoa(unescape(encodeURIComponent(text)));
+}
+
+function showError(msg) {
+  var el = $('error');
+  el.textContent = msg;
+  el.hidden = !msg;
+}
+
+function setMode(m) {
+  mode = m;
+  var signup = m === 'signup';
+  $('title').textContent = signup ? 'Create your account' : 'Log in';
+  $('hint').textContent = signup ? 'Takes a few seconds. No card needed.' : 'Use the email you signed up with.';
+  $('submit').textContent = signup ? 'Create account' : 'Log in';
+  $('switchText').textContent = signup ? 'Already have an account?' : 'New to Fieldnote?';
+  $('switch').textContent = signup ? 'Log in' : 'Create an account';
+  $('password').placeholder = signup ? 'At least 8 characters' : 'Your password';
+  $('password').autocomplete = signup ? 'new-password' : 'current-password';
+  $('password').minLength = signup ? 8 : 0;
+  showError('');
+}
+
+function showWelcome(email) {
+  $('who').textContent = email;
+  $('auth').hidden = true;
+  $('welcome').hidden = false;
+}
+
+function showAuth() {
+  $('welcome').hidden = true;
+  $('auth').hidden = false;
+  $('form').reset();
+  setMode('login');
+}
+
+function startSession(email, remember) {
+  try {
+    sessionStorage.removeItem(SESSION);
+    localStorage.removeItem(SESSION);
+    (remember ? localStorage : sessionStorage).setItem(SESSION, email);
+  } catch (e) {}
+  showWelcome(email);
+}
+
+$('switch').addEventListener('click', function () {
+  setMode(mode === 'login' ? 'signup' : 'login');
+});
+
+$('form').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  showError('');
+
+  var email = $('email').value.trim().toLowerCase();
+  var password = $('password').value;
+  var remember = $('remember').checked;
+  var users = getUsers();
+  var btn = $('submit');
+  btn.disabled = true;
+
+  try {
+    var hash = await scramble(email, password);
+
+    if (mode === 'signup') {
+      if (password.length < 8) {
+        showError('Password must be at least 8 characters.');
+      } else if (users[email]) {
+        showError('An account with that email already exists. Log in instead.');
+      } else {
+        users[email] = hash;
+        if (saveUsers(users)) startSession(email, remember);
+        else showError('Your browser blocked saving. Turn off private mode and try again.');
+      }
+    } else {
+      if (users[email] && users[email] === hash) startSession(email, remember);
+      else showError('Email or password is incorrect.');
+    }
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+$('logout').addEventListener('click', function () {
+  try { sessionStorage.removeItem(SESSION); localStorage.removeItem(SESSION); } catch (e) {}
+  showAuth();
+});
+
+// Already logged in from earlier?
+(function () {
+  var email = null;
+  try { email = sessionStorage.getItem(SESSION) || localStorage.getItem(SESSION); } catch (e) {}
+  if (email && getUsers()[email]) showWelcome(email);
+})();
+</script>
+</body>
+</html>
